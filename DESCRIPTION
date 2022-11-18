@@ -27,8 +27,8 @@ SystemRequirements: zlib, C++17
 NeedsCompilation: yes
 License: MIT + file LICENSE
 Encoding: UTF-8
-Suggests: tinytest, covr
+Suggests: tibble, tinytest, covr
 Depends: R (>= 3.2.0)
-Imports: Rcpp, data.table, tibble
+Imports: Rcpp, data.table
 LinkingTo: Rcpp
 RoxygenNote: 7.2.1
