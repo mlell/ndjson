@@ -21,7 +21,12 @@ stream_in <- function(path, cls = c("dt", "tbl")) {
   cls <- match.arg(cls, c("dt", "tbl"))
   tmp <- stream_in_int(path.expand(path))
   tmp <- data.table::rbindlist(tmp, fill=TRUE)
-  if (cls == "tbl") tibble::as_tibble(tmp) else tmp
+  if (cls == "tbl"){
+    assert_pkg_installed("tibble")
+    return(tibble::as_tibble(tmp))
+  }else{
+    return(tmp)
+  }
 }
 
 #' Validate ndjson file
@@ -61,5 +66,21 @@ flatten <- function(x, cls = c("dt", "tbl")) {
   cls <- match.arg(cls, c("dt", "tbl"))
   tmp <- flatten_int(x)
   tmp <- data.table::rbindlist(tmp, fill=TRUE)
-  if (cls == "tbl") tibble::as_tibble(tmp) else tmp
+  if (cls == "tbl"){
+    assert_pkg_installed("tibble")
+    return(tibble::as_tibble(tmp))
+  }else{
+    return(tmp)
+  }
+}
+
+
+
+# Make sure that a package is installed or issue an error message
+assert_pkg_installed <- function(pkgs){
+   inst <- vapply(pkgs, requireNamespace, logical(1), quietly = TRUE)
+   if(!all(inst)){
+     stop("The package(s) ",toString(pkgs[!inst]), " is/are required but not installed.") 
+   }
+   return(invisible(NULL))
 }
